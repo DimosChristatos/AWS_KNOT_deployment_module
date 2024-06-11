@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sample-application-ingress-georges
+  namespace: sample-application
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing 
+    service.beta.kubernetes.io/aws-load-balancer-type: alb
+    alb.ingress.kubernetes.io/target-type: instance
+    # alb.ingress.kubernetes.io/group.order: '2'
+    # alb.ingress.kubernetes.io/rewrite-target: /
+    
+spec:
+  ingressClassName: alb 
+  rules:
+  - host: boi1.boiboiapp.com
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: sample-application-svc
+              port:
+                number: 80
+  - host: boi2.boiboiapp.com
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: sample-application-svc-v2
+              port:
+                number: 80
+                # k8s-sampleap-sampleap-15785be4da-145259219.us-east-1.elb.amazonaws.com
